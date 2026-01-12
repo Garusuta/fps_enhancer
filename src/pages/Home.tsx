@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import Switch from '../components/Switch';
-import Button from '../components/Button';
 import '../styles/home.css';
 
 const Home: React.FC = () => {
@@ -49,22 +48,6 @@ const Home: React.FC = () => {
     }
   };
 
-  const openNvidiaSettings = async () => {
-    try {
-      await invoke('open_nvidia_settings');
-    } catch (error) {
-      console.error('Failed to open NVIDIA settings:', error);
-    }
-  };
-
-  const launchValorant = async () => {
-    try {
-      await invoke('launch_valorant');
-    } catch (error) {
-      console.error('Failed to launch Valorant:', error);
-    }
-  };
-
   return (
     <div className="home-page">
       <div className="page-header">
@@ -72,7 +55,7 @@ const Home: React.FC = () => {
           <h1>控制面板</h1>
           <p className="page-description">管理你的无畏契约 4:3 分辨率设置</p>
         </div>
-        
+
         {/* 管理员状态 */}
         <div className={`admin-badge ${isAdmin === null ? 'loading' : isAdmin ? 'admin' : 'user'}`}>
           {isAdmin === null ? (
@@ -126,33 +109,7 @@ const Home: React.FC = () => {
           </p>
         </div>
 
-        {/* 快捷操作卡片 */}
-        <div className="card">
-          <h2>快捷操作</h2>
-          <p className="card-description">快速访问常用功能</p>
-
-          <div className="action-buttons">
-            <Button
-              variant="secondary"
-              fullWidth
-              onClick={openNvidiaSettings}
-              icon="🖥️"
-            >
-              打开 NVIDIA 控制面板
-            </Button>
-
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={launchValorant}
-              icon="🎯"
-            >
-              启动无畏契约
-            </Button>
-          </div>
-        </div>
-
-        {/* 快速信息卡片 */}
+        {/* 当前配置卡片 */}
         <div className="card info-card">
           <h2>当前配置</h2>
           <div className="config-preview">

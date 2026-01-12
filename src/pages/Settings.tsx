@@ -154,7 +154,7 @@ const Settings: React.FC = () => {
             </button>
             <button className="preset-btn" onClick={() => setGamePreset(1568, 1080)}>
               <span className="preset-res">1568 × 1080</span>
-              <span className="preset-ratio">~4:3</span>
+              <span className="preset-ratio">4:3</span>
             </button>
             <button className="preset-btn" onClick={() => setGamePreset(1280, 1024)}>
               <span className="preset-res">1280 × 1024</span>

@@ -110,7 +110,6 @@
   color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.5;
-  margin-bottom: 20px;
 }
 
 .main-card {
@@ -121,7 +120,7 @@
   .main-card {
     grid-column: span 1;
   }
-  
+
   .page-header {
     flex-direction: column;
     gap: 16px;
@@ -156,12 +155,6 @@
 .status-badge.inactive {
   background-color: rgba(160, 160, 160, 0.15);
   color: var(--text-secondary);
-}
-
-.action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 
 .config-preview {
