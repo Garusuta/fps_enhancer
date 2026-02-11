@@ -1,0 +1,207 @@
+// src/pages/ValorantPage.tsx
+
+import React, { useState, useEffect, useCallback } from 'react';
+import { Card, Button, Space, Typography, message, Spin } from 'antd';
+import {
+  SearchOutlined,
+  SettingOutlined,
+  UnlockOutlined,
+  EyeInvisibleOutlined,
+} from '@ant-design/icons';
+import { loadAllConfig } from '../ipc/config';
+import {
+  scanGamePath,
+  createPresetWatcher,
+  restoreFilePermission,
+  hideTask,
+} from '../ipc/valorant';
+import type { AppConfig } from '../types';
+
+const { Text, Title, Paragraph } = Typography;
+
+const ValorantPage: React.FC = () => {
+  const [config, setConfig] = useState<AppConfig | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [scanLoading, setScanLoading] = useState<boolean>(false);
+  const [presetLoading, setPresetLoading] = useState<boolean>(false);
+  const [permissionLoading, setPermissionLoading] = useState<boolean>(false);
+  const [hideTaskLoading, setHideTaskLoading] = useState<boolean>(false);
+
+  const loadConfig = useCallback(async () => {
+    try {
+      const appConfig = await loadAllConfig();
+      setConfig(appConfig);
+    } catch (error) {
+      message.error(`加载配置失败: ${error}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    const init = async () => {
+      setLoading(true);
+      await loadConfig();
+      setLoading(false);
+    };
+    init();
+  }, [loadConfig]);
+
+  const handleScanGamePath = async () => {
+    setScanLoading(true);
+    try {
+      await scanGamePath();
+      const updatedConfig = await loadAllConfig();
+      setConfig(updatedConfig);
+      message.success('游戏路径扫描并保存成功');
+    } catch (error) {
+      message.error(`扫描游戏路径失败: ${error}`);
+    } finally {
+      setScanLoading(false);
+    }
+  };
+
+  const handleCreatePresetWatcher = async () => {
+    // 使用 PascalCase
+    if (!config?.Valorant.GamePath) {
+      message.warning('请先获取游戏路径');
+      return;
+    }
+
+    setPresetLoading(true);
+    try {
+      await createPresetWatcher();
+      message.success('预设已应用到监听器');
+    } catch (error) {
+      message.error(`应用预设失败: ${error}`);
+    } finally {
+      setPresetLoading(false);
+    }
+  };
+
+  const handleRestorePermission = async () => {
+    setPermissionLoading(true);
+    try {
+      await restoreFilePermission();
+      message.success('文件权限已解锁');
+    } catch (error) {
+      message.error(`解锁文件权限失败: ${error}`);
+    } finally {
+      setPermissionLoading(false);
+    }
+  };
+
+  const handleHideTask = async () => {
+    setHideTaskLoading(true);
+    try {
+      await hideTask();
+      message.success('任务栏已隐藏');
+    } catch (error) {
+      message.error(`隐藏任务栏失败: ${error}`);
+    } finally {
+      setHideTaskLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <Spin size="large" tip="加载中..." />
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+      <Title level={3} style={{ marginBottom: 24 }}>无畏契约</Title>
+
+      {/* 当前游戏路径展示 - 使用 PascalCase */}
+      <Card style={{ marginBottom: 16 }}>
+        <Title level={5}>当前游戏路径</Title>
+        <div style={{ padding: 12, background: '#fafafa', borderRadius: 6, border: '1px solid #d9d9d9', marginBottom: 8 }}>
+          <Text strong>Valorant 路径：</Text>
+          {config?.Valorant.GamePath ? (
+            <Text code style={{ marginLeft: 8 }}>{config.Valorant.GamePath}</Text>
+          ) : (
+            <Text type="secondary" style={{ marginLeft: 8 }}>未设置</Text>
+          )}
+        </div>
+        <div style={{ padding: 12, background: '#fafafa', borderRadius: 6, border: '1px solid #d9d9d9' }}>
+          <Text strong>启动器路径：</Text>
+          {config?.Valorant.LauncherPath ? (
+            <Text code style={{ marginLeft: 8 }}>{config.Valorant.LauncherPath}</Text>
+          ) : (
+            <Text type="secondary" style={{ marginLeft: 8 }}>未设置</Text>
+          )}
+        </div>
+      </Card>
+
+      <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+        <Card>
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <Title level={5} style={{ margin: 0 }}>获取游戏路径</Title>
+            <Paragraph type="secondary" style={{ margin: 0 }}>
+              自动扫描系统中正在运行的无畏契约游戏路径，扫描成功后将自动保存到配置文件。
+            </Paragraph>
+            <Button
+              type="primary"
+              icon={<SearchOutlined />}
+              onClick={handleScanGamePath}
+              loading={scanLoading}
+            >
+              扫描游戏路径
+            </Button>
+          </Space>
+        </Card>
+
+        <Card>
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <Title level={5} style={{ margin: 0 }}>应用预设到监听器</Title>
+            <Paragraph type="secondary" style={{ margin: 0 }}>
+              将无畏契约的预设配置应用到通用监听器。需要先获取游戏路径。
+            </Paragraph>
+            <Button
+              icon={<SettingOutlined />}
+              onClick={handleCreatePresetWatcher}
+              loading={presetLoading}
+            >
+              应用预设
+            </Button>
+          </Space>
+        </Card>
+
+        <Card>
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <Title level={5} style={{ margin: 0 }}>解锁CFG只读</Title>
+            <Paragraph type="secondary" style={{ margin: 0 }}>
+              当你永远都不想用4:3了，请点击该按钮还原CFG权限。
+            </Paragraph>
+            <Button
+              icon={<UnlockOutlined />}
+              onClick={handleRestorePermission}
+              loading={permissionLoading}
+            >
+              解锁只读
+            </Button>
+          </Space>
+        </Card>
+
+        <Card>
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <Title level={5} style={{ margin: 0 }}>显示任务栏</Title>
+            <Paragraph type="secondary" style={{ margin: 0 }}>
+              不显示任务栏，游戏会出现标题栏，下面被遮挡
+            </Paragraph>
+            <Button
+              icon={<EyeInvisibleOutlined />}
+              onClick={handleHideTask}
+              loading={hideTaskLoading}
+            >
+              显示任务栏
+            </Button>
+          </Space>
+        </Card>
+      </Space>
+    </div>
+  );
+};
+
+export default ValorantPage;

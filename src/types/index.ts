@@ -1,15 +1,35 @@
-export interface ResolutionConfig {
-  ResolutionSizeX: number;
-  ResolutionSizeY: number;
-  RefreshRate: number;
+// src/types/index.ts
+
+/**
+ * Watcher 配置接口
+ */
+export interface WatcherConfig {
+  GamePath: string;   // 游戏路径，空为 ""
+  Width: number;
+  Height: number;
+  Fps: number;
 }
 
-export interface Config {
-  Desktop: ResolutionConfig;
-  Game: ResolutionConfig;
+/**
+ * Valorant 配置接口
+ */
+export interface ValorantConfig {
+  LauncherPath: string;  // 启动器路径，空为 ""
+  GamePath: string;      // 游戏路径，空为 ""
 }
 
-export interface MonitorStatus {
-  isWatching: boolean;
-  valorantRunning: boolean;
+/**
+ * 开发配置接口
+ */
+export interface DevelopmentConfig {
+  Debug: boolean;
+}
+
+/**
+ * 完整应用配置接口
+ */
+export interface AppConfig {
+  Watcher: WatcherConfig;
+  Valorant: ValorantConfig;
+  Development: DevelopmentConfig;
 }

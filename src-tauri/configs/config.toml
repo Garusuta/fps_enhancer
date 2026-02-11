@@ -1,9 +1,12 @@
-[Desktop]
-ResolutionSizeX = 1920
-ResolutionSizeY = 1080
-RefreshRate = 144
+[Watcher]
+GamePath = 'E:\Games\Tencent Games\VALORANT\live\VALORANT.exe'
+Width = 1568
+Height = 1080
+Fps = 144
 
-[Game]
-ResolutionSizeX = 1568
-ResolutionSizeY = 1080
-RefreshRate = 144
+[Valorant]
+LauncherPath = ""
+GamePath = 'E:\Games\Tencent Games\VALORANT\live'
+
+[Development]
+Debug = true

@@ -1,15 +1,17 @@
 use std::sync::Arc;
+
 use tokio::sync::Mutex;
-use tokio::task::JoinHandle;
+
+use crate::watcher::ProcessWatcher;
 
 pub struct AppState {
-    pub watch_task: Arc<Mutex<Option<JoinHandle<()>>>>,
+    pub watcher: Arc<Mutex<Option<ProcessWatcher>>>,
 }
 
 impl AppState {
     pub fn new() -> Self {
-        Self {
-            watch_task: Arc::new(Mutex::new(None)),
+        AppState {
+            watcher: Arc::new(Mutex::new(None)),
         }
     }
 }

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "valo43_tuner",
-  "version": "1.0.0",
-  "identifier": "com.garusuta.valo43tuner",
+  "productName": "fps_enhancer",
+  "version": "0.1.0",
+  "identifier": "com.garusuta.fpsenhancer",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,13 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "Valo43Tuner @Garusuta",
-        "width": 1000,
-        "height": 700,
-        "minWidth": 800,
-        "minHeight": 600,
-        "resizable": true,
-        "decorations": true
+        "title": "fps_enhancer",
+        "width": 980,
+        "height": 680
       }
     ],
     "security": {

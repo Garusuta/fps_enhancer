@@ -1,6 +1,6 @@
 [package]
-name = "valo43_tuner"
-version = "1.0.0"
+name = "fps_enhancer"
+version = "0.1.0"
 description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
@@ -11,7 +11,7 @@ edition = "2021"
 # The `_lib` suffix may seem redundant but it is necessary
 # to make the lib name unique and wouldn't conflict with the bin name.
 # This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
-name = "valo43_tuner_lib"
+name = "fps_enhancer_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
@@ -20,20 +20,19 @@ tauri-build = { version = "2", features = [] }
 [dependencies]
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
-tauri-plugin-shell = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-encoding = "0.2.33"
-rust-embed = "8.9.0"
-sysinfo = "0.37.2"
-tokio = { version = "1.49.0", features = ["full"] }
-windows = { version = "0.58", features = [
+toml = "0.9.8"
+rust-embed = "8.11.0"
+tracing = "0.1.44"
+tracing-appender = "0.2.4"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter", "time"] }
+time = { version = "0.3.46", features = ["formatting", "local-offset", "macros"] }
+windows = { version = "0.62.2", features = [
     "Win32_Graphics_Gdi",
-    "Win32_UI_WindowsAndMessaging",
-    "Win32_Foundation",
-    "Win32_Security",
-    "Win32_System_Threading",
 ] }
-thiserror = "1.0"
-toml = "0.9.11"
-[target.'cfg(windows)'.dependencies]
+thiserror = "2.0.18"
+sysinfo = "0.38.0"
+tokio = { version = "1.49.0", features = ["full"] }
+tauri-plugin-dialog = "2"
+tauri-plugin-shell = "2"

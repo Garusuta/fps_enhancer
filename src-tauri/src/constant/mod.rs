@@ -1,9 +1,12 @@
-use std::{env, path::PathBuf, sync::LazyLock};
+use std::{env::current_exe, path::PathBuf, sync::LazyLock};
 
-pub static CURRENT_DIR: LazyLock<PathBuf> = LazyLock::new(|| {
-    PathBuf::from(&env::current_exe().unwrap())
+pub static WORK_DIR: LazyLock<PathBuf> =
+    LazyLock::new(|| current_exe().unwrap().parent().unwrap().to_path_buf());
+pub static CONFIG_FILE: LazyLock<PathBuf> = LazyLock::new(|| {
+    current_exe()
+        .unwrap()
         .parent()
         .unwrap()
         .to_path_buf()
+        .join("config.toml")
 });
-pub static CONFIG_PATH: LazyLock<PathBuf> = LazyLock::new(|| CURRENT_DIR.join("config.toml"));

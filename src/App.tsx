@@ -1,34 +1,31 @@
-import React, { useState } from 'react';
-import Sidebar from './components/Sidebar';
-import Home from './pages/Home';
-import Settings from './pages/Settings';
-import Tutorial from './pages/Tutorial';
-import './styles/global.css';
-import './App.css';
+// src/App.tsx
+
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
+import Layout from './components/Layout';
+import HomePage from './pages/HomePage';
+import ValorantPage from './pages/ValorantPage';
+import SettingsPage from './pages/SettingsPage';
+import TutorialPage from './pages/TutorialPage';
+import AboutPage from './pages/AboutPage';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState('home');
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <Home />;
-      case 'settings':
-        return <Settings />;
-      case 'tutorial':
-        return <Tutorial />;
-      default:
-        return <Home />;
-    }
-  };
-
   return (
-    <div className="app">
-      <Sidebar currentPage={currentPage} onPageChange={setCurrentPage} />
-      <main className="main-content">
-        {renderPage()}
-      </main>
-    </div>
+    <ConfigProvider locale={zhCN}>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/valorant" element={<ValorantPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/tutorial" element={<TutorialPage />} />
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </ConfigProvider>
   );
 };
 
