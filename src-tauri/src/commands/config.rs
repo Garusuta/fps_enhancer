@@ -22,10 +22,12 @@ pub async fn save_config(state: State<'_, AppState>, app_config: AppConfig) -> R
 
     let mut watcher_guard = state.watcher.lock().await;
     if let Some(watcher_instance) = watcher_guard.as_mut() {
+        let monitor_name = watcher_instance.display_mode.monitor_name.clone();
         watcher_instance.display_mode = DisplayMode {
             height: app_config.watcher.height,
             width: app_config.watcher.width,
             refresh_rate: app_config.watcher.fps,
+            monitor_name: monitor_name,
             ..Default::default()
         };
         if watcher_instance.task.lock().await.is_some() {
