@@ -1,5 +1,4 @@
 use tauri::State;
-use tracing::info;
 
 use crate::{configs::{app_config::AppConfig, app_state::AppState}, utils::{display_manager::DisplayMode, watcher_manager::ProcessWatcher}};
 
@@ -10,11 +9,9 @@ pub async fn toggle_watching(state: State<'_, AppState>) -> Result<bool, String>
 
     if let Some(watcher_instance) = watcher_guard.as_mut() {
         if watcher_instance.task.lock().await.is_some() {
-            info!("Ready to stop");
             watcher_instance.stop().await;
             Ok(false)
         } else {
-            info!("Ready to start");
             watcher_instance.start().await;
             Ok(true)
         }
@@ -30,7 +27,6 @@ pub async fn toggle_watching(state: State<'_, AppState>) -> Result<bool, String>
             },
         ));
         if let Some(watcher_instance) = watcher_guard.as_mut() {
-            info!("Ready to start");
             watcher_instance.start().await;
             Ok(true)
         } else {

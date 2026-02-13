@@ -88,10 +88,10 @@ impl ProcessWatcher {
         let mut task_guard = self.task.lock().await;
 
         if let Some(task) = task_guard.take() {
+            info!("{} begins to stop watching", self.process_path);
             task.abort();
-            info!("{} stop", self.process_path);
         } else {
-            warn!("{} not watching", self.process_path);
+            warn!("{} not in watching", self.process_path);
         }
     }
 }

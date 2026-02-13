@@ -2,7 +2,7 @@ use std::{
     collections::HashMap, error::Error, fs::{read_dir, read_to_string}, path::{Path, PathBuf}
 };
 
-use tracing::{debug, info};
+use tracing::debug;
 
 use crate::{
     configs::app_config::AppConfig, utils::{command_manager::run_command, text_manager::{insert_line_at, replace_multiple_parallel}}
@@ -21,7 +21,7 @@ fn get_last_login_user() -> Result<String, Box<dyn Error>> {
         .find(|line| line.starts_with("LastKnownUser="))
         .ok_or("LastKnownUser not found")?
         .replace("LastKnownUser=", "");
-    info!("Last login user: {}", last_login_user);
+    debug!("Last login user: {}", last_login_user);
     Ok(last_login_user)
 }
 
@@ -42,7 +42,7 @@ pub fn get_last_login_user_folder() -> Result<String, Box<dyn Error>> {
             .file_name()
             .into_string()
             .map_err(|_| "Failed to convert OsString to String")?;
-    info!("Last login user folder: {}", user_name_folder);
+    debug!("Last login user folder: {}", user_name_folder);
     Ok(user_name_folder)
 }
 

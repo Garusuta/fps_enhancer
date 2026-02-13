@@ -11,6 +11,6 @@ fn main() {
     debug!("WORK_DIR: {:?}", WORK_DIR);
     debug!("CONFIG_FILE: {:?}", CONFIG_FILE);
     let result = EmbedConfigs::init();
-    debug!("initialize_configs: {:?}", result);
+    debug!("Initialize embeded configs: {:?}", result);
     fps_enhancer_lib::run()
 }
