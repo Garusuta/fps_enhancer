@@ -13,7 +13,7 @@ import {
   scanGamePath,
   createPresetWatcher,
   restoreFilePermission,
-  hideTask,
+  hideWindowsTask,
 } from '../ipc/valorant';
 import type { AppConfig } from '../types';
 
@@ -92,7 +92,7 @@ const ValorantPage: React.FC = () => {
   const handleHideTask = async () => {
     setHideTaskLoading(true);
     try {
-      await hideTask();
+      await hideWindowsTask();
       message.success('任务栏已隐藏');
     } catch (error) {
       message.error(`隐藏任务栏失败: ${error}`);
