@@ -1,7 +1,12 @@
 use tauri::State;
 
-use crate::{configs::{app_config::AppConfig, app_state::AppState}, utils::{display_manager::DisplayMode, watcher_manager::ProcessWatcher}};
-
+use crate::{
+    configs::{app_config::AppConfig, app_state::AppState},
+    utils::{
+        display_manager::{restore_default_settings, DisplayMode},
+        watcher_manager::ProcessWatcher,
+    },
+};
 
 #[tauri::command]
 pub async fn toggle_watching(state: State<'_, AppState>) -> Result<bool, String> {
@@ -10,6 +15,7 @@ pub async fn toggle_watching(state: State<'_, AppState>) -> Result<bool, String>
     if let Some(watcher_instance) = watcher_guard.as_mut() {
         if watcher_instance.task.lock().await.is_some() {
             watcher_instance.stop().await;
+            restore_default_settings().map_err(|e| e.to_string())?;
             Ok(false)
         } else {
             watcher_instance.start().await;
