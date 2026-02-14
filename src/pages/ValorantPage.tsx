@@ -92,7 +92,7 @@ const ValorantPage: React.FC = () => {
     setPermissionLoading(true);
     try {
       await restoreFilePermission();
-      message.success('文件权限已解锁');
+      message.success('只读权限已解锁');
     } catch (error) {
       message.error(`解锁文件权限失败: ${error}`);
     } finally {
@@ -107,7 +107,7 @@ const ValorantPage: React.FC = () => {
     setHideTaskLoading(true);
     try {
       await hideWindowsTask();
-      message.success('任务栏已隐藏');
+      message.success('TODO：该功能还没做呢');
     } catch (error) {
       message.error(`隐藏任务栏失败: ${error}`);
     } finally {
@@ -175,7 +175,7 @@ const ValorantPage: React.FC = () => {
           <Space direction="vertical" style={{ width: '100%' }}>
             <Title level={5} style={{ margin: 0 }}>获取游戏路径</Title>
             <Paragraph type="secondary" style={{ margin: 0 }}>
-              自动扫描系统中已安装的无畏契约游戏路径，扫描成功后将自动保存到配置文件。
+              自动扫描系统中已安装的无畏契约游戏路径（需启动游戏），扫描成功后将自动保存到配置文件。
             </Paragraph>
             <Button
               type="primary"
@@ -205,12 +205,11 @@ const ValorantPage: React.FC = () => {
           </Space>
         </Card>
 
-        {/* 一键修改 CFG - 新增 */}
         <Card>
           <Space direction="vertical" style={{ width: '100%' }}>
             <Title level={5} style={{ margin: 0 }}>一键修改 CFG</Title>
             <Paragraph type="secondary" style={{ margin: 0 }}>
-              一键修改无畏契约的 CFG 配置文件，优化游戏设置。需要先获取游戏路径。
+              一键修改无畏契约的 CFG 配置文件，强制锁定预设分辨率。需要先获取游戏路径。
             </Paragraph>
             <Button
               danger
@@ -223,12 +222,11 @@ const ValorantPage: React.FC = () => {
           </Space>
         </Card>
 
-        {/* 解锁文件权限 */}
         <Card>
           <Space direction="vertical" style={{ width: '100%' }}>
-            <Title level={5} style={{ margin: 0 }}>解锁文件权限</Title>
+            <Title level={5} style={{ margin: 0 }}>解锁 CFG 文件权限</Title>
             <Paragraph type="secondary" style={{ margin: 0 }}>
-              解锁无畏契约游戏文件的访问权限。
+              解锁无畏契约CFG文件只读的访问权限（仅当前登录账号）。
             </Paragraph>
             <Button
               icon={<UnlockOutlined />}
@@ -240,12 +238,11 @@ const ValorantPage: React.FC = () => {
           </Space>
         </Card>
 
-        {/* 隐藏任务栏 */}
         <Card>
           <Space direction="vertical" style={{ width: '100%' }}>
-            <Title level={5} style={{ margin: 0 }}>隐藏任务栏</Title>
+            <Title level={5} style={{ margin: 0 }}>显示任务栏</Title>
             <Paragraph type="secondary" style={{ margin: 0 }}>
-              隐藏系统任务栏，提供更沉浸的游戏体验。
+              显示系统任务栏，防止游戏窗口被遮挡。
             </Paragraph>
             <Button
               icon={<EyeInvisibleOutlined />}
