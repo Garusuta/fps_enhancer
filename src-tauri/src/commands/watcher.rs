@@ -3,7 +3,7 @@ use tauri::State;
 use crate::{
     configs::{app_config::AppConfig, app_state::AppState},
     utils::{
-        display_manager::{restore_default_settings, DisplayMode},
+        display_manager::{DisplayMode, change_display_mode, change_display_mode_for_monitor, restore_default_settings},
         watcher_manager::ProcessWatcher,
     },
 };
@@ -15,10 +15,19 @@ pub async fn toggle_watching(state: State<'_, AppState>) -> Result<bool, String>
     if let Some(watcher_instance) = watcher_guard.as_mut() {
         if watcher_instance.task.lock().await.is_some() {
             watcher_instance.stop().await;
+            // 关闭还原分辨率
             restore_default_settings().map_err(|e| e.to_string())?;
             Ok(false)
         } else {
             watcher_instance.start().await;
+            // 启动时当游戏正在运行，立即运行切换分辨率
+            if watcher_instance.is_running() {
+                if watcher_instance.display_mode.monitor_name.is_empty() {
+                    let _ = change_display_mode(&watcher_instance.display_mode, false);
+                } else {
+                    let _ = change_display_mode_for_monitor(&watcher_instance.display_mode, false);
+                }
+            }
             Ok(true)
         }
     } else {
